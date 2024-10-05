@@ -1,52 +1,52 @@
 services:
-  mysql:
-    image: "mysql/mysql-server:8.0"
-    ports:
-      - "${DB_PORT:-3306}:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
-      MYSQL_ROOT_HOST: "%"
-      MYSQL_DATABASE: "${DB_DATABASE}"
-      MYSQL_USER: "${DB_USERNAME}"
-      MYSQL_PASSWORD: "${DB_PASSWORD}"
-    volumes:
-      - "velana-mysql:/var/lib/mysql"
-    command: >
-      --character-set-server=utf8mb4
-      --collation-server=utf8mb4_unicode_ci
-    networks:
-      - velana
+    mysql:
+        image: "mysql/mysql-server:8.0"
+        ports:
+            - "${DB_PORT:-3306}:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+            MYSQL_ROOT_HOST: "%"
+            MYSQL_DATABASE: "${DB_DATABASE}"
+            MYSQL_USER: "${DB_USERNAME}"
+            MYSQL_PASSWORD: "${DB_PASSWORD}"
+        volumes:
+            - "velana-mysql:/var/lib/mysql"
+        command: >
+            --character-set-server=utf8mb4
+            --collation-server=utf8mb4_unicode_ci
+        networks:
+            - velana
 
-  redis:
-    image: "redis:alpine"
-    ports:
-      - "${REDIS_PORT:-6379}:6379"
-    volumes:
-      - "velana-redis:/data"
-    networks:
-      - velana
+    redis:
+        image: "redis:alpine"
+        ports:
+            - "${REDIS_PORT:-6379}:6379"
+        volumes:
+            - "velana-redis:/data"
+        networks:
+            - velana
 
-  minio:
-    image: "minio/minio:latest"
-    ports:
-      - "${FORWARD_MINIO_PORT:-9000}:9000"
-      - "${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900"
-    environment:
-      MINIO_ROOT_USER: "${AWS_ACCESS_KEY_ID:-template}"
-      MINIO_ROOT_PASSWORD: "${AWS_SECRET_ACCESS_KEY:-template}"
-    volumes:
-      - "velana-minio:/data/minio"
-    networks:
-      - velana
-    command: 'minio server /data/minio --console-address ":8900"'
+    minio:
+        image: "minio/minio:latest"
+        ports:
+            - "${FORWARD_MINIO_PORT:-9000}:9000"
+            - "${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900"
+        environment:
+            MINIO_ROOT_USER: "${AWS_ACCESS_KEY_ID:-template}"
+            MINIO_ROOT_PASSWORD: "${AWS_SECRET_ACCESS_KEY:-template}"
+        volumes:
+            - "velana-minio:/data/minio"
+        networks:
+            - velana
+        command: 'minio server /data/minio --console-address ":8900"'
 
 networks:
-  velana:
-    driver: bridge
+    velana:
+        driver: bridge
 volumes:
-  velana-mysql:
-    driver: local
-  velana-redis:
-    driver: local
-  velana-minio:
-    driver: local
+    velana-mysql:
+        driver: local
+    velana-redis:
+        driver: local
+    velana-minio:
+        driver: local
