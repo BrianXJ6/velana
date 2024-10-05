@@ -1,3 +1,6 @@
 [submodule "backoffice"]
 	path = backoffice
 	url = https://github.com/Velana-Payments/backoffice.git
+[submodule "admin"]
+	path = admin
+	url = https://github.com/Velana-Payments/admin.git
