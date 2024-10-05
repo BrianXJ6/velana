@@ -4,3 +4,6 @@
 [submodule "admin"]
 	path = admin
 	url = https://github.com/Velana-Payments/admin.git
+[submodule "checkout"]
+	path = checkout
+	url = https://github.com/Velana-Payments/checkout.git
