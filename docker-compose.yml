@@ -1,4 +1,26 @@
 services:
+    checkout:
+        build:
+            context: "./checkout/docker/develop"
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: "${WWWGROUP:-1000}"
+        image: "checkout-app"
+        ports:
+            - "${CHECKOUT_PORT:-8080}:80"
+        environment:
+            WWWUSER: "${WWWUSER:-1000}"
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: "${SAIL_XDEBUG_MODE:-off}"
+        volumes:
+            - "./checkout:/var/www/html"
+        networks:
+            - velana
+        depends_on:
+            - mysql
+            - redis
+            - minio
+
     mysql:
         image: "mysql/mysql-server:8.0"
         ports:
@@ -43,6 +65,7 @@ services:
 networks:
     velana:
         driver: bridge
+
 volumes:
     velana-mysql:
         driver: local
