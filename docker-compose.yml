@@ -1,7 +1,7 @@
 services:
     checkout:
         build:
-            context: "./checkout/docker/develop"
+            context: ".${CHECKOUT_DIR:-/checkout}/docker/develop"
             dockerfile: Dockerfile
             args:
                 WWWGROUP: "${WWWGROUP:-1000}"
@@ -13,7 +13,7 @@ services:
             LARAVEL_SAIL: 1
             XDEBUG_MODE: "${SAIL_XDEBUG_MODE:-off}"
         volumes:
-            - "./checkout:/var/www/html"
+            - ".${CHECKOUT_DIR:-/checkout}:/var/www/html"
         networks:
             - velana
         depends_on:
