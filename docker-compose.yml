@@ -1,4 +1,26 @@
 services:
+    admin:
+        build:
+            context: ".${ADMIN_DIR:-/admin}/docker/develop"
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: "${WWWGROUP:-1000}"
+        image: "admin-app"
+        ports:
+            - "${ADMIN_PORT:-8080}:80"
+        environment:
+            WWWUSER: "${WWWUSER:-1000}"
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: "${SAIL_XDEBUG_MODE:-off}"
+        volumes:
+            - ".${ADMIN_DIR:-/admin}:/var/www/html"
+        networks:
+            - velana
+        depends_on:
+            - mysql
+            - redis
+            - minio
+
     checkout:
         build:
             context: ".${CHECKOUT_DIR:-/checkout}/docker/develop"
